@@ -1,0 +1,9 @@
+.calendario-reserva {
+  margin-bottom: 16px;
+}
+
+.calendario-reserva label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}

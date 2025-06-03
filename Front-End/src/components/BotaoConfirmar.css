@@ -1,0 +1,14 @@
+.botao-confirmar {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.botao-confirmar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

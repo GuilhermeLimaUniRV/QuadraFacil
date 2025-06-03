@@ -1,0 +1,22 @@
+.tela-reserva {
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Centraliza o título */
+.tela-reserva h2 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+
+.tela-reserva h2 {
+  text-align: center;
+  margin-bottom: 24px;
+}

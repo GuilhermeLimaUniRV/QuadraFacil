@@ -1,0 +1,15 @@
+.quadra-select {
+  margin-bottom: 16px;
+}
+
+.quadra-select label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.quadra-select select {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+}
