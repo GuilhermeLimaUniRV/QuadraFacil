@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import QuadraSelect from '../components/QuadraSelect';
-import CalendarioReserva from '../components/CalendarioReserva';
-import HorarioSelectIntervalo from '../components/HorarioSelectIntervalo';
-import BotaoConfirmar from '../components/BotaoConfirmar';
+import QuadraSelect from '../components/tela_reserva/QuadraSelect';
+import CalendarioReserva from '../components/tela_reserva/CalendarioReserva';
+import HorarioSelectIntervalo from '../components/tela_reserva/HorarioSelectIntervalo';
+import BotaoConfirmar from '../components/tela_reserva/BotaoConfirmar';
 import './TelaReserva.css';
 
 const TelaReserva = () => {
