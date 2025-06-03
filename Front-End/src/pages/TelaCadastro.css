@@ -1,0 +1,46 @@
+.tela-cadastro {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+}
+
+.tela-cadastro h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tela-cadastro label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.tela-cadastro input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+}
+
+.tela-cadastro button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.botao-cancelar {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background-color: #dc3545 !important; /* vermelho */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
