@@ -1,30 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TelaLogin.css';
+import { loginUsuario } from '../api/usuario';
 
 const TelaLogin = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [mensagem, setMensagem] = useState('');
+  const [tipoMensagem, setTipoMensagem] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Simulação simples de login bem-sucedido
-    if (email && senha) {
-      navigate('/reserva');
-    } else {
-      alert('Preencha os campos corretamente.');
+    try {
+      const resposta = await loginUsuario(email, senha);
+      setMensagem(resposta.mensagem);
+      setTipoMensagem('sucesso');
+      setTimeout(() => {
+        setMensagem('');
+        navigate('/reserva');
+      }, 1500);
+    } catch (err) {
+      setMensagem('Credenciais inválidas.');
+      setTipoMensagem('erro');
+      setTimeout(() => setMensagem(''), 3000);
     }
-  };
-
-  const irParaCadastro = () => {
-    navigate('/cadastro');
   };
 
   return (
     <div className="tela-login">
-      <h2>Entrar</h2>
+      <h2>Login</h2>
+
+      {mensagem && (
+        <div className={`mensagem ${tipoMensagem}`}>
+          {mensagem}
+        </div>
+      )}
+
       <form onSubmit={handleLogin}>
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -35,11 +47,10 @@ const TelaLogin = () => {
         <button type="submit">Entrar</button>
       </form>
 
-      <p className="link-recuperar">Esqueci minha senha</p>
+      <p  className="link-recuperar">Esqueci minha senha</p>
 
       <div className="cadastro-container">
-        <p>Não tem conta?</p>
-        <button onClick={irParaCadastro}>Criar conta</button>
+        <p onClick={() => navigate('/cadastro')} >Não tenho conta</p>
       </div>
     </div>
   );

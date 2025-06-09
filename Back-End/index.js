@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors'); // ← ESTA LINHA É O QUE FALTOU
 const express = require('express');
 const app = express();
 const usuarioRoutes = require('./routes/usuarioRoutes');
@@ -6,6 +7,8 @@ const enderecoRoutes = require('./routes/enderecoRoutes');
 const quadraRoutes = require('./routes/quadraRoutes');
 const reservaRoutes = require('./routes/reservaRoutes');
 
+app.use(express.json());
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/usuarios', usuarioRoutes);
