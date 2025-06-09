@@ -2,10 +2,27 @@ const supabase = require('../db/supabaseClient');
 
 exports.criarUsuario = async (req, res) => {
   const { nome, email, senha_hash, perfil } = req.body;
-  const { data, error } = await supabase.from('usuario').insert([{ nome, email, senha_hash, perfil }]);
-  if (error) return res.status(500).json({ error: error.message });
-  res.status(201).json(data);
+
+  const { data, error } = await supabase
+    .from('usuario')
+    .insert([{ nome, email: email.trim().toLowerCase(), senha_hash, perfil }])
+    .select(); // ← isso garante que data venha com o novo registro
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  if (!data || data.length === 0) {
+    return res.status(500).json({ error: 'Erro inesperado: nenhum dado retornado.' });
+  }
+
+  res.status(201).json({
+    mensagem: 'Usuário cadastrado com sucesso!',
+    usuario: data[0]
+  });
 };
+
+
 
 exports.listarUsuarios = async (req, res) => {
   const { data, error } = await supabase.from('usuario').select('*');
