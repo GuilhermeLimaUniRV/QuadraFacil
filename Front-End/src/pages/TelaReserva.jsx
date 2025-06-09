@@ -1,78 +1,95 @@
-import React, { useState } from 'react';
-import QuadraSelect from '../components/tela_reserva/QuadraSelect';
-import CalendarioReserva from '../components/tela_reserva/CalendarioReserva';
-import HorarioSelectIntervalo from '../components/tela_reserva/HorarioSelectIntervalo';
-import BotaoConfirmar from '../components/tela_reserva/BotaoConfirmar';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TelaReserva.css';
+import { listarQuadras } from '../api/quadra';
+import { criarReserva } from '../api/reserva';
 
 const TelaReserva = () => {
-  const quadras = [
-    { id: '1', nome: 'Quadra 1 - Jardim Presidente, Rua 117, Quadra 13, lt9' },
-    { id: '2', nome: 'Quadra 2 - Norte' },
-  ];
-
-  const horarios = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
-
+  const [quadras, setQuadras] = useState([]);
   const [quadraSelecionada, setQuadraSelecionada] = useState('');
-  const [dataSelecionada, setDataSelecionada] = useState(null);
-  const [horarioInicio, setHorarioInicio] = useState('');
-  const [horarioFim, setHorarioFim] = useState('');
+  const [data, setData] = useState('');
+  const [horaInicio, setHoraInicio] = useState('');
+  const [horaFim, setHoraFim] = useState('');
+  const [mensagem, setMensagem] = useState('');
+  const [tipoMensagem, setTipoMensagem] = useState('');
+  const navigate = useNavigate();
 
-  // Simulação de horários já reservados
-  const horariosOcupados = [
-    { inicio: '10:00', fim: '11:00' },
-    { inicio: '14:00', fim: '15:00' },
-  ];
+  useEffect(() => {
+    listarQuadras().then(setQuadras);
+  }, []);
 
-  const handleReserva = () => {
-    if (horarioInicio >= horarioFim) {
-      alert('O horário final deve ser posterior ao horário inicial.');
+  const handleReserva = async (e) => {
+    e.preventDefault();
+
+    if (!quadraSelecionada || !data || !horaInicio || !horaFim) {
+      setMensagem('Preencha todos os campos.');
+      setTipoMensagem('erro');
       return;
     }
 
-    const conflito = horariosOcupados.some(
-      (h) => h.inicio === horarioInicio && h.fim === horarioFim
-    );
-
-    if (conflito) {
-      alert('Esse horário já está reservado. Por favor, escolha outro intervalo.');
+    if (horaInicio >= horaFim) {
+      setMensagem('Horário inicial deve ser menor que o final.');
+      setTipoMensagem('erro');
       return;
     }
 
-    alert(
-      `Reserva confirmada para a quadra ${quadraSelecionada}, no dia ${dataSelecionada?.toLocaleDateString()} das ${horarioInicio} às ${horarioFim}.`
-    );
+    const id_usuario = parseInt(localStorage.getItem('id_usuario'));
+
+    if (!id_usuario) {
+      setMensagem('Usuário não autenticado.');
+      setTipoMensagem('erro');
+      return;
+    }
+
+    try {
+      await criarReserva({
+        id_usuario,
+        id_quadra: quadraSelecionada,
+        data_reserva: data,
+        horario_inicio: horaInicio,
+        horario_fim: horaFim
+      });
+
+      setMensagem('Reserva realizada com sucesso!');
+      setTipoMensagem('sucesso');
+      setTimeout(() => {
+        setMensagem('');
+        navigate('/');
+      }, 2000);
+    } catch (err) {
+      setMensagem('Horário já reservado ou erro na reserva.');
+      setTipoMensagem('erro');
+    }
   };
 
   return (
     <div className="tela-reserva">
-      <h2>Reserva de Quadra</h2>
+      <h2>Nova Reserva</h2>
 
-      <QuadraSelect
-        quadras={quadras}
-        selectedQuadra={quadraSelecionada}
-        onChange={(e) => setQuadraSelecionada(e.target.value)}
-      />
+      {mensagem && <div className={`mensagem ${tipoMensagem}`}>{mensagem}</div>}
 
-      <CalendarioReserva
-        dataSelecionada={dataSelecionada}
-        onChange={setDataSelecionada}
-      />
+      <form onSubmit={handleReserva}>
+        <label>Quadra:</label>
+        <select value={quadraSelecionada} onChange={(e) => setQuadraSelecionada(e.target.value)} required>
+          <option value="">Selecione uma quadra</option>
+          {quadras.map((q) => (
+            <option key={q.id_quadra} value={q.id_quadra}>
+              {q.nome}
+            </option>
+          ))}
+        </select>
 
-      <HorarioSelectIntervalo
-        horarios={horarios}
-        inicio={horarioInicio}
-        fim={horarioFim}
-        onChangeInicio={(e) => setHorarioInicio(e.target.value)}
-        onChangeFim={(e) => setHorarioFim(e.target.value)}
-      />
+        <label>Data:</label>
+        <input type="date" value={data} onChange={(e) => setData(e.target.value)} required />
 
-      <BotaoConfirmar
-        onClick={handleReserva}
-        disabled={
-          !quadraSelecionada || !dataSelecionada || !horarioInicio || !horarioFim
-        }
-      />
+        <label>Horário de Início:</label>
+        <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+
+        <label>Horário de Fim:</label>
+        <input type="time" value={horaFim} onChange={(e) => setHoraFim(e.target.value)} required />
+
+        <button type="submit">Reservar</button>
+      </form>
     </div>
   );
 };

@@ -14,12 +14,13 @@ const TelaLogin = () => {
     e.preventDefault();
     try {
       const resposta = await loginUsuario(email, senha);
+      localStorage.setItem('id_usuario', resposta.usuario.id_usuario); // salvar ID
       setMensagem(resposta.mensagem);
       setTipoMensagem('sucesso');
       setTimeout(() => {
         setMensagem('');
         navigate('/reserva');
-      }, 1500);
+      }, 1000);
     } catch (err) {
       setMensagem('Credenciais inválidas.');
       setTipoMensagem('erro');
