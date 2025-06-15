@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TelaLogin.css';
 import { loginUsuario } from '../api/usuario';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const TelaLogin = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const TelaLogin = () => {
   const [mensagem, setMensagem] = useState('');
   const [tipoMensagem, setTipoMensagem] = useState('');
   const navigate = useNavigate();
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,10 +44,22 @@ const TelaLogin = () => {
 
       <form onSubmit={handleLogin}>
         <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input type="email" name="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
         <label>Senha:</label>
-        <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} required />
+        <div className="campo-senha">
+          <input
+            type={mostrarSenha ? 'text' : 'password'}
+            name="password"
+            autoComplete="current-password"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required
+          />
+          <span className="icone-senha" onClick={() => setMostrarSenha(!mostrarSenha)}>
+            {mostrarSenha ? <FiEyeOff /> : <FiEye />}
+          </span>
+        </div>
 
         <button type="submit">Entrar</button>
       </form>

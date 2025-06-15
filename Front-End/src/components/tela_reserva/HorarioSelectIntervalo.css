@@ -1,0 +1,26 @@
+.horario-select-intervalo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.horario-select-intervalo label {
+  font-weight: 500;
+  color: #333;
+}
+
+.horario-select-intervalo select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+
+.horario-select-intervalo select:focus {
+  border-color: #3498db;
+  outline: none;
+}
