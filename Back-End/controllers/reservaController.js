@@ -21,10 +21,18 @@ exports.criarReserva = async (req, res) => {
 };
 
 exports.listarReservas = async (req, res) => {
-  const { data, error } = await supabase.from('reserva').select('*');
+  const { data, error } = await supabase
+    .from('reserva')
+    .select(`
+      *,
+      quadra (nome, tipo),
+      usuario (nome)
+    `);
+
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 };
+
 
 exports.buscarReservaPorId = async (req, res) => {
   const { id } = req.params;
@@ -35,10 +43,20 @@ exports.buscarReservaPorId = async (req, res) => {
 
 exports.listarPorUsuario = async (req, res) => {
   const { id_usuario } = req.params;
-  const { data, error } = await supabase.from('reserva').select('*').eq('id_usuario', id_usuario);
+
+  const { data, error } = await supabase
+    .from('reserva')
+    .select(`
+      *,
+      quadra (nome, tipo),
+      usuario (nome)
+    `)
+    .eq('id_usuario', id_usuario);
+
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 };
+
 
 exports.deletarReserva = async (req, res) => {
   const { id } = req.params;
