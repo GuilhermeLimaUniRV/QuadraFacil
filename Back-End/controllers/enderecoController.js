@@ -6,7 +6,7 @@ exports.criarEndereco = async (req, res) => {
   res.status(201).json(data);
 };
 exports.criarEnderecoInterno = async (endereco) => {
-  const { data, error } = await supabase.from('Endereco').insert([endereco]).select();
+  const { data, error } = await supabase.from('endereco').insert([endereco]).select();
 
   if (error) {
     throw new Error('Erro ao criar endereço: ' + error.message);

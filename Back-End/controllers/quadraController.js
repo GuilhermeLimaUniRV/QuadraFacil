@@ -10,7 +10,7 @@ exports.criarQuadra = async (req, res) => {
 
     // Passo 2: Criar a quadra com o id_endereco do endereço recém-criado
     const { data: quadraCriada, error: errorQuadra } = await supabase
-      .from('Quadra')
+      .from('quadra')
       .insert([
         {
           nome,

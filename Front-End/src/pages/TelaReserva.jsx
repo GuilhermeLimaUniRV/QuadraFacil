@@ -12,7 +12,6 @@ const TelaReserva = () => {
   const [horaFim, setHoraFim] = useState('');
   const [mensagem, setMensagem] = useState('');
   const [tipoMensagem, setTipoMensagem] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     listarQuadras().then(setQuadras);
@@ -52,15 +51,22 @@ const TelaReserva = () => {
 
       setMensagem('Reserva realizada com sucesso!');
       setTipoMensagem('sucesso');
+
+      // Resetar os campos após 2 segundos
       setTimeout(() => {
         setMensagem('');
-        navigate('/');
+        setQuadraSelecionada('');
+        setData('');
+        setHoraInicio('');
+        setHoraFim('');
       }, 2000);
+
     } catch (err) {
       setMensagem('Horário já reservado ou erro na reserva.');
       setTipoMensagem('erro');
     }
   };
+
 
   return (
     <div className="tela-reserva">
