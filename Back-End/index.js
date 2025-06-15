@@ -9,7 +9,6 @@ const reservaRoutes = require('./routes/reservaRoutes');
 
 app.use(express.json());
 app.use(cors());
-app.use(express.json());
 
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/enderecos', enderecoRoutes);

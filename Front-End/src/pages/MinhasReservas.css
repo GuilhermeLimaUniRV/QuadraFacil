@@ -1,0 +1,82 @@
+.minhas-reservas {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.minhas-reservas h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 28px;
+  color: #333;
+}
+
+.minhas-reservas ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.minhas-reservas li {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.minhas-reservas li div:first-child {
+  flex: 1;
+}
+
+.minhas-reservas strong {
+  color: #555;
+}
+
+.minhas-reservas button {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.minhas-reservas button:hover {
+  opacity: 0.9;
+}
+
+.minhas-reservas button:first-of-type {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.minhas-reservas button:last-of-type {
+  background-color: #3498db;
+  color: white;
+}
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: #eee;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.filtros input,
+.filtros select {
+  flex: 1 1 180px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
