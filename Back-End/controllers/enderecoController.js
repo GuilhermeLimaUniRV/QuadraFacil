@@ -5,6 +5,16 @@ exports.criarEndereco = async (req, res) => {
   if (error) return res.status(500).json({ error: error.message });
   res.status(201).json(data);
 };
+exports.criarEnderecoInterno = async (endereco) => {
+  const { data, error } = await supabase.from('Endereco').insert([endereco]).select();
+
+  if (error) {
+    throw new Error('Erro ao criar endereço: ' + error.message);
+  }
+
+  return data[0]; // Retorna o primeiro item, que é o endereço recém-criado
+};
+
 
 exports.listarEnderecos = async (req, res) => {
   const { data, error } = await supabase.from('endereco').select('*');
