@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TelaCadastroQuadra.css';
 import { cadastrarQuadra } from '../api/quadra';
+import BotaoVoltar from '../components/BotaoVoltar';
 
 const TelaCadastroQuadra = () => {
   const [nome, setNome] = useState('');
@@ -58,7 +59,7 @@ const TelaCadastroQuadra = () => {
     try {
       const resposta = await cadastrarQuadra(quadraComEndereco);
       alert(resposta.mensagem);
-      navigate('/quadras'); // Redireciona após sucesso
+      navigate('/minhas-reservas'); // Redireciona após sucesso
     } catch (err) {
       alert('Erro ao cadastrar a quadra.');
     }
@@ -66,6 +67,8 @@ const TelaCadastroQuadra = () => {
 
   return (
     <div className="tela-cadastro-quadra">
+      <BotaoVoltar/>
+
       <h2>Cadastrar Quadra</h2>
 
       <form onSubmit={handleCadastroQuadra}>
@@ -86,9 +89,9 @@ const TelaCadastroQuadra = () => {
         <input type="text" value={endereco.cidade} onChange={(e) => setEndereco({ ...endereco, cidade: e.target.value })} required />
 
         <label>Estado:</label>
-        <select 
-          value={endereco.estado} 
-          onChange={(e) => setEndereco({ ...endereco, estado: e.target.value })} 
+        <select
+          value={endereco.estado}
+          onChange={(e) => setEndereco({ ...endereco, estado: e.target.value })}
           required
         >
           <option value="">Selecione o estado</option>

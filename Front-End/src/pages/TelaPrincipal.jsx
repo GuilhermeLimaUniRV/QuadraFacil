@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './TelaPrincipal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import BotaoVoltar from '../components/BotaoVoltar';
 
 const TelaPrincipal = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const TelaPrincipal = () => {
 
   return (
     <div className="tela-principal">
+      <BotaoVoltar destino='/login' />
       <h1>Bem-vindo à Tela Principal</h1>
 
       {/* Ícone de Usuário */}
@@ -56,7 +58,7 @@ const TelaPrincipal = () => {
 
       <div className="menu-principal">
         <button onClick={() => navigate('/reserva')}>Fazer Reserva</button>
-        <button onClick={() => navigate('/minhas-reservas')}>Minhas Reservas</button>
+        <button onClick={() => navigate('/minhas-reservas')}>Reservas</button>
 
         {isAdmin && (
           <button onClick={() => navigate('/cadastro-quadra')}>Cadastrar Quadra</button>
