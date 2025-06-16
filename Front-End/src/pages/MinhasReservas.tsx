@@ -7,12 +7,17 @@ import {
   excluirReserva,
   atualizarStatusReserva
 } from '../api/reserva';
+import AlertaPopup from '../components/AlertaPopup'; // novo componente
+import BotaoVoltar from '../components/BotaoVoltar';
 
 const MinhasReservas = () => {
   const navigate = useNavigate();
   const [reservas, setReservas] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [usuarioId, setUsuarioId] = useState(null);
+
+  const [mensagem, setMensagem] = useState('');
+  const [tipoMensagem, setTipoMensagem] = useState('');
 
   // Filtros
   const [filtroQuadra, setFiltroQuadra] = useState('');
@@ -33,48 +38,59 @@ const MinhasReservas = () => {
     setIsAdmin(perfil === 'administrador');
   }, [navigate]);
 
+  const buscarReservas = async () => {
+    try {
+      const resposta = isAdmin
+        ? await listarReservas()
+        : await listarReservasPorUsuario(usuarioId);
+
+      setReservas(resposta);
+    } catch (err) {
+      console.error('Erro ao buscar reservas:', err);
+      setMensagem('Erro ao buscar reservas.');
+      setTipoMensagem('erro');
+    }
+  };
+
   useEffect(() => {
-    if (!usuarioId) return;
-
-    const buscarReservas = async () => {
-      try {
-        const resposta = isAdmin
-          ? await listarReservas()
-          : await listarReservasPorUsuario(usuarioId);
-
-        setReservas(resposta);
-      } catch (err) {
-        console.error('Erro ao buscar reservas:', err);
-      }
-    };
-
-    buscarReservas();
+    if (usuarioId) buscarReservas();
   }, [usuarioId, isAdmin]);
+
+  const exibirMensagem = (texto, tipo) => {
+    setMensagem(texto);
+    setTipoMensagem(tipo);
+    setTimeout(() => setMensagem(''), 3000);
+  };
 
   const handleExcluir = async (idReserva) => {
     try {
       await excluirReserva(idReserva);
       setReservas(reservas.filter(r => r.id_reserva !== idReserva));
+      exibirMensagem('Reserva excluída com sucesso.', 'sucesso');
     } catch (err) {
       console.error('Erro ao excluir reserva:', err);
+      exibirMensagem('Erro ao excluir reserva.', 'erro');
     }
   };
 
   const handleAtualizarStatus = async (id, novoStatus) => {
-  try {
-    await atualizarStatusReserva(id, novoStatus);
-
-    // Atualiza no estado local imediatamente
-    setReservas(prev =>
-      prev.map(r =>
-        r.id_reserva === id ? { ...r, status: novoStatus } : r
-      )
-    );
-  } catch (err) {
-    console.error('Erro ao atualizar status:', err);
-  }
-};
-
+    try {
+      await atualizarStatusReserva(id, novoStatus);
+      setReservas(prev =>
+        prev.map(r =>
+          r.id_reserva === id ? { ...r, status: novoStatus } : r
+        )
+      );
+      exibirMensagem(
+        `Reserva ${novoStatus === 'confirmada' ? 'aprovada' : 'rejeitada'} com sucesso.`,
+        'sucesso'
+      );
+    } catch (err) {
+      console.error('Erro ao atualizar status:', err);
+      const erroMsg = err.response?.data?.mensagem || 'Erro ao atualizar status.';
+      exibirMensagem(erroMsg, 'erro');
+    }
+  };
 
   const reservasFiltradas = reservas.filter((reserva) => {
     return (
@@ -87,7 +103,14 @@ const MinhasReservas = () => {
 
   return (
     <div className="minhas-reservas">
-      <h2>{isAdmin ? 'Todas as Reservas' : 'Minhas Reservas'}</h2>
+      <BotaoVoltar/>
+      <h2>Reservas</h2>
+
+      <AlertaPopup
+        mensagem={mensagem}
+        tipo={tipoMensagem}
+        onFechar={() => setMensagem('')}
+      />
 
       {isAdmin && (
         <div className="filtros">

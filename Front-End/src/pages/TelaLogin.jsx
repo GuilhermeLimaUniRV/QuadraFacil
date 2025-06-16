@@ -63,9 +63,6 @@ const TelaLogin = () => {
 
         <button type="submit">Entrar</button>
       </form>
-
-      <p onClick={() => navigate('/recuperar')} className="link-recuperar">Esqueci minha senha</p>
-
       <div className="cadastro-container">
         <p onClick={() => navigate('/cadastro')} >Não tenho conta</p>
       </div>

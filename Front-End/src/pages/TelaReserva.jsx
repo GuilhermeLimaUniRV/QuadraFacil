@@ -3,8 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './TelaReserva.css';
 import { listarQuadras } from '../api/quadra';
 import { criarReserva } from '../api/reserva';
+import BotaoVoltar from '../components/BotaoVoltar';
+
 
 const TelaReserva = () => {
+  const navigate = useNavigate();
+
   const [quadras, setQuadras] = useState([]);
   const [quadraSelecionada, setQuadraSelecionada] = useState('');
   const [data, setData] = useState('');
@@ -62,14 +66,18 @@ const TelaReserva = () => {
       }, 2000);
 
     } catch (err) {
-      setMensagem('Horário já reservado ou erro na reserva.');
+      const mensagemErro = err.response?.data?.mensagem || 'Erro ao realizar reserva.';
+      setMensagem(mensagemErro);
       setTipoMensagem('erro');
     }
+
   };
 
 
   return (
     <div className="tela-reserva">
+      <BotaoVoltar />
+
       <h2>Nova Reserva</h2>
 
       {mensagem && <div className={`mensagem ${tipoMensagem}`}>{mensagem}</div>}
