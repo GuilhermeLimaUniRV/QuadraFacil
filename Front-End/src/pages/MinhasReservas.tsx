@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MinhasReservas.css';
-import { listarReservas, excluirReserva } from '../api/reserva';
+import {
+  listarReservas,
+  listarReservasPorUsuario,
+  excluirReserva,
+  atualizarStatusReserva
+} from '../api/reserva';
 
 const MinhasReservas = () => {
   const navigate = useNavigate();
@@ -35,9 +40,8 @@ const MinhasReservas = () => {
       try {
         const resposta = isAdmin
           ? await listarReservas()
-          : await listarReservas(usuarioId);
+          : await listarReservasPorUsuario(usuarioId);
 
-        console.log('Reservas carregadas:', resposta);
         setReservas(resposta);
       } catch (err) {
         console.error('Erro ao buscar reservas:', err);
@@ -56,11 +60,23 @@ const MinhasReservas = () => {
     }
   };
 
-  const handleEditar = (idReserva) => {
-    navigate(`/editar-reserva/${idReserva}`);
-  };
+  const handleAtualizarStatus = async (id, novoStatus) => {
+  try {
+    await atualizarStatusReserva(id, novoStatus);
 
-  const reservasFiltradas = reservas.filter(reserva => {
+    // Atualiza no estado local imediatamente
+    setReservas(prev =>
+      prev.map(r =>
+        r.id_reserva === id ? { ...r, status: novoStatus } : r
+      )
+    );
+  } catch (err) {
+    console.error('Erro ao atualizar status:', err);
+  }
+};
+
+
+  const reservasFiltradas = reservas.filter((reserva) => {
     return (
       reserva.quadra?.nome.toLowerCase().includes(filtroQuadra.toLowerCase()) &&
       reserva.usuario?.nome.toLowerCase().includes(filtroUsuario.toLowerCase()) &&
@@ -96,9 +112,10 @@ const MinhasReservas = () => {
             value={filtroStatus}
             onChange={(e) => setFiltroStatus(e.target.value)}
           >
-            <option value="">Todos os status</option>
+            <option value="">Todas</option>
+            <option value="pendente">Pendente</option>
             <option value="confirmada">Confirmada</option>
-            <option value="cancelada">Cancelada</option>
+            <option value="rejeitada">Rejeitada</option>
           </select>
         </div>
       )}
@@ -118,8 +135,12 @@ const MinhasReservas = () => {
             </div>
             <div>
               <button onClick={() => handleExcluir(reserva.id_reserva)}>Excluir</button>
-              {isAdmin && (
-                <button onClick={() => handleEditar(reserva.id_reserva)}>Editar</button>
+
+              {isAdmin && reserva.status === 'pendente' && (
+                <>
+                  <button onClick={() => handleAtualizarStatus(reserva.id_reserva, 'confirmada')}>Aprovar</button>
+                  <button onClick={() => handleAtualizarStatus(reserva.id_reserva, 'rejeitada')}>Rejeitar</button>
+                </>
               )}
             </div>
           </li>
