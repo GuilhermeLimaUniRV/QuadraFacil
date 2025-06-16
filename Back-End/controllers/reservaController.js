@@ -3,7 +3,8 @@ const {
   dataNoPassado,
   horarioJaPassou,
   usuarioJaTemReserva,
-  existeConflitoDeHorario
+  existeConflitoDeHorario,
+  usuarioJaTemOutraReserva
 } = require('../services/reservaService');
 
 exports.criarReserva = async (req, res) => {
@@ -115,7 +116,7 @@ exports.atualizarStatus = async (req, res) => {
   }
 
   // (opcional) Verifica se o usuário já tem outra confirmada no mesmo dia
-  const duplicada = await usuarioJaTemReserva(id_usuario, data_reserva);
+  const duplicada = await usuarioJaTemOutraReserva(id_usuario, data_reserva,id);
   if (duplicada) {
     return res.status(409).json({ mensagem: 'O usuário já possui uma reserva confirmada nesse dia.' });
   }
