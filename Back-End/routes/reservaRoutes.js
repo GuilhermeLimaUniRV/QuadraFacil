@@ -7,5 +7,5 @@ router.get('/', controller.listarReservas);
 router.get('/:id', controller.buscarReservaPorId);
 router.get('/usuario/:id_usuario', controller.listarPorUsuario);
 router.delete('/:id', controller.deletarReserva);
-
+router.put('/:id/status', controller.atualizarStatus);
 module.exports = router;

@@ -64,3 +64,16 @@ exports.deletarReserva = async (req, res) => {
   if (error) return res.status(500).json({ error: error.message });
   res.status(204).end();
 };
+exports.atualizarStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const { error } = await supabase
+    .from('reserva')
+    .update({ status })
+    .eq('id_reserva', id);
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.status(200).json({ mensagem: 'Status atualizado com sucesso.' });
+};
