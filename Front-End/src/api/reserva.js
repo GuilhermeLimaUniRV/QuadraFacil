@@ -6,7 +6,7 @@ export const criarReserva = async (dados) => {
   return resposta.data;
 };
 
-// Listar TODAS as reservas (somente para admin)
+// Listar TODAS as reservas
 export const listarReservas = async () => {
   const resposta = await API.get('/reservas');
   return resposta.data;

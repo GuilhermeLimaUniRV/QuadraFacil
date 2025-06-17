@@ -26,8 +26,8 @@ const MinhasReservas = () => {
   const [filtroStatus, setFiltroStatus] = useState('');
 
   useEffect(() => {
-    const id = localStorage.getItem('id_usuario');
-    const perfil = localStorage.getItem('perfil');
+    const id = sessionStorage.getItem('id_usuario');
+    const perfil = sessionStorage.getItem('perfil');
 
     if (!id) {
       navigate('/login');
@@ -66,7 +66,7 @@ const MinhasReservas = () => {
     try {
       await excluirReserva(idReserva);
       setReservas(reservas.filter(r => r.id_reserva !== idReserva));
-      exibirMensagem('Reserva excluída com sucesso.', 'sucesso');
+      exibirMensagem('Reserva Excluida', 'sucesso');
     } catch (err) {
       console.error('Erro ao excluir reserva:', err);
       exibirMensagem('Erro ao excluir reserva.', 'erro');

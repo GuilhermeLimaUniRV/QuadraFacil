@@ -1,56 +1,109 @@
+/* Estilos gerais do AlertaPopup */
 .alerta-popup {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  min-width: 320px;
-  max-width: 90%;
-  padding: 20px 40px;
-  border-radius: 12px;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  position: fixed; /* Mantém o alerta fixo na tela */
+  top: 50%; /* 50% do topo da viewport */
+  left: 50%; /* 50% da esquerda da viewport */
+  transform: translate(-50%, -50%); /* Centraliza o elemento com base no seu próprio tamanho */
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  animation: slideFadeIn 0.3s ease-in-out;
+  gap: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  opacity: 0;
+  /* Removido o translateY inicial para a animação, já que o transform: translate é para centralizar */
+  animation: fadeIn 0.5s forwards; /* Animação de entrada */
+  z-index: 1000;
+  max-width: 90%; /* Limita a largura em telas menores */
+  text-align: center; /* Centraliza o texto dentro do popup */
 }
 
-.alerta-popup.sucesso {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #a5d6a7;
-}
-
-.alerta-popup.erro {
-  background-color: #fbe9e7;
-  color: #c62828;
-  border: 1px solid #ef9a9a;
-}
-
-.alerta-popup button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  margin-left: 16px;
-  cursor: pointer;
-  color: inherit;
-  transition: transform 0.2s;
-}
-
-.alerta-popup button:hover {
-  transform: scale(1.2);
-}
-
-@keyframes slideFadeIn {
+/* Animação de entrada (ajustada para não ter translateY inicial) */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -60%);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -50%);
+  }
+}
+
+/* Estilos para a mensagem */
+.alerta-popup p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+/* Estilos para o botão de fechar */
+.alerta-popup button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 1;
+}
+
+.alerta-popup button:hover {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Tipos de alerta */
+
+/* Alerta de Sucesso */
+.alerta-popup.sucesso {
+  background-color: #28a745;
+}
+
+/* Alerta de Erro */
+.alerta-popup.erro {
+  background-color: #dc3545;
+}
+
+/* Alerta de Aviso (Warning) */
+.alerta-popup.aviso {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.alerta-popup.aviso button {
+  color: rgba(51, 51, 51, 0.7);
+}
+
+.alerta-popup.aviso button:hover {
+  color: #333;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+  .alerta-popup {
+    /* Em telas menores, a largura máxima ajuda a quebrar linhas */
+    max-width: 90%;
+    width: auto; /* Permite que a largura se ajuste ao conteúdo */
+    padding: 12px 20px;
+    /* Centralizado por padrão, então não precisa de left/right específicos */
+  }
+}
+
+@media (max-width: 480px) {
+  .alerta-popup {
+    flex-direction: column;
+    align-items: center; /* Centraliza itens na coluna */
+    padding: 10px 15px;
+  }
+
+  .alerta-popup button {
+    align-self: center; /* Centraliza o botão na coluna */
+    margin-top: 10px; /* Espaçamento com a mensagem */
   }
 }

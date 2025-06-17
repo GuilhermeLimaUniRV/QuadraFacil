@@ -12,9 +12,9 @@ const TelaPrincipal = () => {
   const [menuVisible, setMenuVisible] = useState(false); // Controle para mostrar/ocultar o menu
 
   useEffect(() => {
-    const usuarioId = localStorage.getItem('id_usuario');
-    const usuarioPerfil = localStorage.getItem('perfil');
-    const usuarioNome = localStorage.getItem('nome'); // Salve o nome durante o login, se necessário
+    const usuarioId = sessionStorage.getItem('id_usuario');
+    const usuarioPerfil = sessionStorage.getItem('perfil');
+    const usuarioNome = sessionStorage.getItem('nome'); // Salve o nome durante o login, se necessário
 
     if (!usuarioId) {
       navigate('/login');
@@ -29,7 +29,7 @@ const TelaPrincipal = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
 

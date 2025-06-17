@@ -16,9 +16,9 @@ const TelaLogin = () => {
     e.preventDefault();
     try {
       const resposta = await loginUsuario(email, senha);
-      localStorage.setItem('id_usuario', resposta.usuario.id_usuario); // salvar ID
-      localStorage.setItem('perfil', resposta.usuario.perfil); // Administrador ou Cidadão
-      localStorage.setItem('nome', resposta.usuario.nome); // Salvar o nome do usuário (opcional)
+      sessionStorage.setItem('id_usuario', resposta.usuario.id_usuario); // salvar ID
+      sessionStorage.setItem('perfil', resposta.usuario.perfil); // Administrador ou Cidadão
+      sessionStorage.setItem('nome', resposta.usuario.nome); // Salvar o nome do usuário (opcional)
       setMensagem(resposta.mensagem);
       setTipoMensagem('sucesso');
       setTimeout(() => {
